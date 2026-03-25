@@ -81,6 +81,11 @@ img {
     flex-direction: column !important;
     align-items: flex-start !important;
   }
+
+  .mobile-center {
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
 }
 
 

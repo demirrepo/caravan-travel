@@ -69,7 +69,7 @@ export default async function Home() {
             </div>
           </div>
 
-          <div style={{
+          <div className="mobile-center" style={{
             marginLeft: 'auto', // <-- Added this back to push the card to the far right!
             maxWidth: 430, width: '100%',
             background: 'rgba(255,255,255,.12)',

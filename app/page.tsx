@@ -23,7 +23,7 @@ export default async function Home() {
       }}>
         <div className="container" style={{
           minHeight: 78, display: 'flex',
-          alignItems: 'center', justifyContent: 'space-between', gap: 24
+          alignItems: 'center', justifyContent: 'space-between', gap: 24, flexWrap: 'wrap'
         }}>
           <a href="#home" style={{ display: 'flex', alignItems: 'center', gap: 12, fontWeight: 800, fontSize: '1.15rem' }}>
             <div style={{
@@ -55,10 +55,10 @@ export default async function Home() {
         background: `linear-gradient(90deg, rgba(24,18,14,.82) 0%, rgba(24,18,14,.52) 42%, rgba(24,18,14,.18) 100%),
           url('/khiva.jpg') center/cover no-repeat`
       }}>
-        <div className="container" style={{
+        {/* Swapped inline grid for responsive-grid-2 */}
+        <div className="container responsive-grid-2" style={{
           position: 'relative', zIndex: 1,
-          display: 'grid', gridTemplateColumns: '1.05fr .95fr',
-          gap: 32, alignItems: 'center', padding: '56px 0 70px'
+          alignItems: 'center', padding: '56px 0 70px'
         }}>
           <div>
             <div style={{
@@ -100,7 +100,7 @@ export default async function Home() {
           </div>
 
           <div style={{
-            marginLeft: 'auto', maxWidth: 430,
+            maxWidth: 430, width: '100%',
             background: 'rgba(255,255,255,.12)',
             border: '1px solid rgba(255,255,255,.18)',
             borderRadius: 28, padding: 22,
@@ -136,6 +136,7 @@ export default async function Home() {
       </section>
 
       {/* SIGHTSEEING HIGHLIGHTS */}
+      {/* (This section was already beautifully responsive because of flexWrap: 'wrap'!) */}
       <section id="highlights" style={{ padding: '84px 0', background: 'var(--bg-2)' }}>
         <div className="container">
           <div style={{ marginBottom: 32 }}>
@@ -147,20 +148,12 @@ export default async function Home() {
             </p>
           </div>
 
-          {/* Collage Layout */}
           <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap' }}>
-
-            {/* Left Large Image (Ayoz Qala) */}
             <div style={{
-              flex: '1 1 500px',
-              minHeight: 500,
-              borderRadius: 24,
-              position: 'relative',
-              overflow: 'hidden',
-              boxShadow: 'var(--shadow)',
+              flex: '1 1 500px', minHeight: 500, borderRadius: 24, position: 'relative',
+              overflow: 'hidden', boxShadow: 'var(--shadow)',
               background: `url('/ayoz-qala.jpg') center/cover no-repeat`
             }}>
-              {/* Dark Gradient Overlay for Text Readability */}
               <div style={{
                 position: 'absolute', inset: 0,
                 background: 'linear-gradient(180deg, transparent 40%, rgba(24,18,14,0.85) 100%)',
@@ -177,17 +170,10 @@ export default async function Home() {
               </div>
             </div>
 
-            {/* Right Side Stacked Images */}
             <div style={{ flex: '1 1 350px', display: 'flex', flexDirection: 'column', gap: 24 }}>
-
-              {/* Top Right (Tuproq Qala) */}
               <div style={{
-                flex: 1,
-                minHeight: 238,
-                borderRadius: 24,
-                position: 'relative',
-                overflow: 'hidden',
-                boxShadow: 'var(--shadow)',
+                flex: 1, minHeight: 238, borderRadius: 24, position: 'relative',
+                overflow: 'hidden', boxShadow: 'var(--shadow)',
                 background: `url('/tuproq-qala.jpg') center/cover no-repeat`
               }}>
                 <div style={{
@@ -202,14 +188,9 @@ export default async function Home() {
                 </div>
               </div>
 
-              {/* Bottom Right (Qizil Qala) */}
               <div style={{
-                flex: 1,
-                minHeight: 238,
-                borderRadius: 24,
-                position: 'relative',
-                overflow: 'hidden',
-                boxShadow: 'var(--shadow)',
+                flex: 1, minHeight: 238, borderRadius: 24, position: 'relative',
+                overflow: 'hidden', boxShadow: 'var(--shadow)',
                 background: `url('/qizil-qala.jpg') center/cover no-repeat`
               }}>
                 <div style={{
@@ -223,7 +204,6 @@ export default async function Home() {
                   </p>
                 </div>
               </div>
-
             </div>
           </div>
         </div>
@@ -231,8 +211,7 @@ export default async function Home() {
 
       {/* FEATURED TOURS */}
       <section id="featured" style={{
-        padding: '84px 0',
-        background: 'rgba(255,255,255,.38)',
+        padding: '84px 0', background: 'rgba(255,255,255,.38)',
         borderTop: '1px solid rgba(120,90,45,0.08)',
         borderBottom: '1px solid rgba(120,90,45,0.08)'
       }}>
@@ -246,7 +225,8 @@ export default async function Home() {
             </p>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 22 }}>
+          {/* Swapped inline grid for responsive-grid-3 */}
+          <div className="responsive-grid-3">
             {tours && tours.map(tour => (
               <article key={tour.id} style={{
                 background: 'white', borderRadius: 24, padding: 22,
@@ -256,8 +236,7 @@ export default async function Home() {
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', gap: 14 }}>
                   <h3 style={{ fontSize: '1.25rem', lineHeight: 1.35, fontWeight: 550 }}>{tour.title}</h3>
                   <div style={{
-                    whiteSpace: 'nowrap',
-                    background: 'rgba(31,166,74,.08)',
+                    whiteSpace: 'nowrap', background: 'rgba(31,166,74,.08)',
                     border: '1px solid rgba(31,166,74,.12)',
                     padding: '8px 14px', borderRadius: 999,
                     display: 'flex', alignItems: 'center', gap: '8px'
@@ -269,7 +248,8 @@ export default async function Home() {
                   </div>
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                {/* Swapped inline grid for responsive-grid-2 inside the cards */}
+                <div className="responsive-grid-2" style={{ display: 'grid', gap: 12 }}>
                   {tour.duration && <div style={{ background: '#fcfaf7', border: '1px solid var(--line)', borderRadius: 18, padding: 14 }}>
                     <small style={{ display: 'block', color: 'var(--muted)', marginBottom: 4 }}>Duration</small>
                     <strong>{tour.duration}</strong>
@@ -292,13 +272,13 @@ export default async function Home() {
                   <a href={`https://wa.me/${tour.whatsapp_number}?text=${encodeURIComponent(tour.whatsapp_message || `Hello I want to book ${tour.title}`)}`}
                     target="_blank"
                     style={{
-                      display: 'inline-flex', alignItems: 'center',
-                      minHeight: 52, padding: '0 22px', borderRadius: 999,
+                      display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+                      minHeight: 52, padding: '0 22px', borderRadius: 999, flex: 1,
                       fontWeight: 800, background: 'var(--green)', color: 'white'
                     }}>Book now</a>
                   <a href="#contact" style={{
-                    display: 'inline-flex', alignItems: 'center',
-                    minHeight: 52, padding: '0 22px', borderRadius: 999,
+                    display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+                    minHeight: 52, padding: '0 22px', borderRadius: 999, flex: 1,
                     fontWeight: 800, background: '#fff7eb', color: 'var(--gold-dark)',
                     border: '1px solid rgba(193,145,59,.16)'
                   }}>Ask details</a>
@@ -321,7 +301,8 @@ export default async function Home() {
             </p>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 22 }}>
+          {/* Swapped inline grid for responsive-grid-3 */}
+          <div className="responsive-grid-3">
             {transfers && transfers.map((transfer: any) => (
               <article key={transfer.id} style={{
                 background: 'linear-gradient(180deg, #fffefd, #fff8ef)',
@@ -370,16 +351,11 @@ export default async function Home() {
 
       {/* CONTACT & LOCATION */}
       <section id="contact" style={{ padding: '84px 0' }}>
-        {/* Using our responsive-grid-2 for the perfect 50/50 split */}
         <div className="container responsive-grid-2" style={{ alignItems: 'stretch' }}>
-
-          {/* Contact Box (New Clean Theme) */}
           <div style={{
             borderRadius: 28, padding: 40,
-            background: 'white', // Replaced the dark brown!
-            border: '1px solid var(--line)',
-            boxShadow: 'var(--shadow)',
-            display: 'flex', flexDirection: 'column',
+            background: 'white', border: '1px solid var(--line)',
+            boxShadow: 'var(--shadow)', display: 'flex', flexDirection: 'column',
             justifyContent: 'center', alignItems: 'flex-start',
             gap: 24, minHeight: 380
           }}>
@@ -401,7 +377,6 @@ export default async function Home() {
               }}>Contact on WhatsApp</a>
           </div>
 
-          {/* Google Maps Block */}
           <div style={{
             width: '100%', minHeight: 380, borderRadius: 28, overflow: 'hidden',
             boxShadow: 'var(--shadow)', border: '1px solid var(--line)', background: '#eaeaea',
@@ -409,15 +384,10 @@ export default async function Home() {
           }}>
             <iframe
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2993.6795794420586!2d60.35960060000001!3d41.381045799999995!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x41dfa5899de77379%3A0x34094adfcfaa4acb!2sCaravan%20Hotel!5e0!3m2!1sen!2s!4v1774465345254!5m2!1sen!2s"
-              width="100%"
-              height="100%"
-              style={{ border: 0, flexGrow: 1 }}
-              allowFullScreen={false}
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
+              width="100%" height="100%" style={{ border: 0, flexGrow: 1 }}
+              allowFullScreen={false} loading="lazy" referrerPolicy="no-referrer-when-downgrade"
             ></iframe>
           </div>
-
         </div>
       </section>
 

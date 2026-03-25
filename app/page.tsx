@@ -1,4 +1,5 @@
 import { supabase } from '@/lib/supabase'
+import Navbar from '@/components/Navbar'
 
 export default async function Home() {
   const { data: tours } = await supabase
@@ -14,38 +15,7 @@ export default async function Home() {
 
   return (
     <>
-      {/* HEADER */}
-      <header style={{
-        position: 'sticky', top: 0, zIndex: 1000,
-        backdropFilter: 'blur(14px)',
-        background: 'rgba(255,250,244,0.84)',
-        borderBottom: '1px solid rgba(120,90,45,0.08)'
-      }}>
-        <div className="container" style={{
-          minHeight: 78, display: 'flex',
-          alignItems: 'center', justifyContent: 'space-between', gap: 24, flexWrap: 'wrap'
-        }}>
-          <a href="#home" style={{ display: 'flex', alignItems: 'center', gap: 12, fontWeight: 800, fontSize: '1.15rem' }}>
-            <div style={{
-              width: 46, height: 46, borderRadius: 14,
-              background: 'linear-gradient(135deg, var(--gold), #e8be65)',
-              color: 'white', display: 'grid', placeItems: 'center', fontSize: 22
-            }}>✦</div>
-            <div>
-              Caravan Travel
-              <small style={{ display: 'block', fontSize: '.82rem', color: 'var(--muted)', fontWeight: 600 }}>
-                Tours, Transfers & Historical Adventures
-              </small>
-            </div>
-          </a>
-          <nav style={{ display: 'flex', gap: 18, flexWrap: 'wrap', fontWeight: 700, color: '#4e4337' }}>
-            <a href="#services">Services</a>
-            <a href="#featured">Featured Tours</a>
-            <a href="#transfers">Transfers</a>
-            <a href="#contact">Contact</a>
-          </nav>
-        </div>
-      </header>
+      <Navbar />
 
       {/* HERO */}
       <section id="home" style={{

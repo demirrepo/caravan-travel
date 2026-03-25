@@ -82,3 +82,41 @@ img {
     align-items: flex-start !important;
   }
 }
+
+
+/* --- Mobile Navbar Styles --- */
+.hamburger-btn {
+  display: none !important;
+}
+
+.nav-menu {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+  .hamburger-btn {
+    display: block !important;
+  }
+
+  .nav-menu {
+    display: none;
+    position: absolute;
+    top: 78px;
+    /* sits right below the header */
+    left: 0;
+    width: 100%;
+    background: rgba(255, 250, 244, 0.98);
+    backdrop-filter: blur(14px);
+    flex-direction: column;
+    padding: 24px;
+    gap: 20px;
+    box-shadow: var(--shadow);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .nav-menu.open {
+    display: flex;
+  }
+}

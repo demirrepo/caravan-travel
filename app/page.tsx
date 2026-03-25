@@ -55,10 +55,10 @@ export default async function Home() {
         background: `linear-gradient(90deg, rgba(24,18,14,.82) 0%, rgba(24,18,14,.52) 42%, rgba(24,18,14,.18) 100%),
           url('/khiva.jpg') center/cover no-repeat`
       }}>
-        {/* Swapped inline grid for responsive-grid-2 */}
         <div className="container responsive-grid-2" style={{
           position: 'relative', zIndex: 1,
-          alignItems: 'center', padding: '56px 0 70px'
+          alignItems: 'center', padding: '56px 0 70px',
+          gap: 32 // <-- Added the wide 32px gap back!
         }}>
           <div>
             <div style={{
@@ -100,6 +100,7 @@ export default async function Home() {
           </div>
 
           <div style={{
+            marginLeft: 'auto', // <-- Added this back to push the card to the far right!
             maxWidth: 430, width: '100%',
             background: 'rgba(255,255,255,.12)',
             border: '1px solid rgba(255,255,255,.18)',

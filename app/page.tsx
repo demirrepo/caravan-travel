@@ -1,6 +1,8 @@
 import { supabase } from '@/lib/supabase'
 import Navbar from '@/components/Navbar'
 
+export const revalidate = 0
+
 export default async function Home() {
   const { data: tours } = await supabase
     .from('tours').select('*').eq('is_active', true)

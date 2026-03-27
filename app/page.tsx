@@ -1,7 +1,8 @@
 import { supabase } from '@/lib/supabase'
 import Navbar from '@/components/Navbar'
+import Link from 'next/link'
 
-export const revalidate = 0
+export const revalidate = 60
 
 export default async function Home() {
   const { data: tours } = await supabase
@@ -249,12 +250,14 @@ export default async function Home() {
                       minHeight: 52, padding: '0 22px', borderRadius: 999, flex: 1,
                       fontWeight: 800, background: 'var(--green)', color: 'white'
                     }}>Book now</a>
-                  <a href="#contact" style={{
+
+                  <Link href={`/tours/${tour.slug}`} style={{ // <-- THIS IS THE FIX
                     display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
                     minHeight: 52, padding: '0 22px', borderRadius: 999, flex: 1,
                     fontWeight: 800, background: '#fff7eb', color: 'var(--gold-dark)',
-                    border: '1px solid rgba(193,145,59,.16)'
-                  }}>Ask details</a>
+                    border: '1px solid rgba(193,145,59,.16)', textDecoration: 'none'
+                  }}>More details</Link>
+
                 </div>
               </article>
             ))}

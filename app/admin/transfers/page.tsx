@@ -34,22 +34,55 @@ export default function AdminTransfers() {
   async function handleSave() {
     if (!form.route) return alert('Route is required')
 
-    if (editingId) {
-      await supabase.from('transfers').update(form).eq('id', editingId)
-      await supabase.from('transfer_prices').delete().eq('transfer_id', editingId)
+    // Helper function to format the prices array before saving
+    const formatPrices = (transferId: string) => {
+      return prices
+        .filter(p => p.price) // Only keep rows where a price was entered
+        .map(p => {
+          // Auto-format main price
+          let formattedPrice = p.price.trim();
+          if (!formattedPrice.startsWith('$')) {
+            formattedPrice = '$' + formattedPrice;
+          }
 
-      const priceRows = prices.filter(p => p.price).map(p => ({
-        vehicle: p.vehicle, capacity: p.capacity, price: p.price, discount_from_price: p.discount_from_price, transfer_id: editingId
-      }))
-      if (priceRows.length > 0) await supabase.from('transfer_prices').insert(priceRows)
+          // Auto-format discount price
+          let formattedDiscount = p.discount_from_price ? p.discount_from_price.trim() : '';
+          if (formattedDiscount && !formattedDiscount.startsWith('$')) {
+            formattedDiscount = '$' + formattedDiscount;
+          }
+
+          return {
+            vehicle: p.vehicle,
+            capacity: p.capacity,
+            price: formattedPrice,
+            discount_from_price: formattedDiscount,
+            transfer_id: transferId
+          };
+        });
+    };
+
+    if (editingId) {
+      // 1. Update the main transfer details
+      await supabase.from('transfers').update(form).eq('id', editingId)
+
+      // 2. Clear old prices and insert the newly formatted ones
+      await supabase.from('transfer_prices').delete().eq('transfer_id', editingId)
+      const priceRows = formatPrices(editingId);
+
+      if (priceRows.length > 0) {
+        await supabase.from('transfer_prices').insert(priceRows)
+      }
 
     } else {
+      // 1. Insert new transfer
       const { data } = await supabase.from('transfers').insert([{ ...form, is_active: true }]).select()
+
+      // 2. Insert the formatted prices linked to the new transfer ID
       if (data && data[0]) {
-        const priceRows = prices.filter(p => p.price).map(p => ({
-          vehicle: p.vehicle, capacity: p.capacity, price: p.price, discount_from_price: p.discount_from_price, transfer_id: data[0].id
-        }))
-        if (priceRows.length > 0) await supabase.from('transfer_prices').insert(priceRows)
+        const priceRows = formatPrices(data[0].id);
+        if (priceRows.length > 0) {
+          await supabase.from('transfer_prices').insert(priceRows)
+        }
       }
     }
 

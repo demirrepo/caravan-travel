@@ -7,6 +7,8 @@ import Link from 'next/link'
 type Tour = {
     id: string
     title: string
+    slug: string // Added
+    description: string // Added
     price: string
     discount_from_price?: string
     duration: string
@@ -19,8 +21,9 @@ type Tour = {
 }
 
 const empty = {
-    title: '', price: '', discount_from_price: '', duration: '', distance: '',
-    sightseeing: '', driving: '', whatsapp_number: '', whatsapp_message: ''
+    title: '', slug: '', description: '', price: '', discount_from_price: '',
+    duration: '', distance: '', sightseeing: '', driving: '',
+    whatsapp_number: '', whatsapp_message: ''
 }
 
 export default function AdminTours() {
@@ -39,12 +42,32 @@ export default function AdminTours() {
     useEffect(() => { fetch() }, [])
 
     async function handleSave() {
-        if (!form.title || !form.price) return alert('Title and price are required')
+        if (!form.title || !form.price || !form.slug) return alert('Title, Price, and URL Slug are required')
 
+        // 1. Auto-format the main price
+        let formattedPrice = form.price.trim();
+        if (!formattedPrice.startsWith('$')) {
+            formattedPrice = '$' + formattedPrice;
+        }
+
+        // 2. Auto-format the discount price (if it exists)
+        let formattedDiscount = form.discount_from_price ? form.discount_from_price.trim() : '';
+        if (formattedDiscount && !formattedDiscount.startsWith('$')) {
+            formattedDiscount = '$' + formattedDiscount;
+        }
+
+        // 3. Create the final object to save
+        const dataToSave = {
+            ...form,
+            price: formattedPrice,
+            discount_from_price: formattedDiscount
+        }
+
+        // 4. Send it to Supabase
         if (editingId) {
-            await supabase.from('tours').update(form).eq('id', editingId)
+            await supabase.from('tours').update(dataToSave).eq('id', editingId)
         } else {
-            await supabase.from('tours').insert([{ ...form, is_active: true }])
+            await supabase.from('tours').insert([{ ...dataToSave, is_active: true }])
         }
 
         resetForm()
@@ -53,9 +76,16 @@ export default function AdminTours() {
 
     function handleEdit(tour: Tour) {
         setForm({
-            title: tour.title, price: tour.price, discount_from_price: tour.discount_from_price || '',
-            duration: tour.duration, distance: tour.distance, sightseeing: tour.sightseeing,
-            driving: tour.driving, whatsapp_number: tour.whatsapp_number,
+            title: tour.title,
+            slug: tour.slug || '',
+            description: tour.description || '',
+            price: tour.price,
+            discount_from_price: tour.discount_from_price || '',
+            duration: tour.duration,
+            distance: tour.distance,
+            sightseeing: tour.sightseeing,
+            driving: tour.driving,
+            whatsapp_number: tour.whatsapp_number,
             whatsapp_message: tour.whatsapp_message
         })
         setEditingId(tour.id)
@@ -86,6 +116,12 @@ export default function AdminTours() {
         outline: 'none', width: '100%'
     }
 
+    // This automatically creates a slug when you type a title
+    const handleTitleChange = (title: string) => {
+        const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+        setForm({ ...form, title, slug });
+    }
+
     return (
         <main style={{ maxWidth: 900, margin: '0 auto', padding: '60px 24px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 32 }}>
@@ -107,9 +143,22 @@ export default function AdminTours() {
                     <h2 style={{ fontWeight: 800, marginBottom: 18 }}>
                         {editingId ? 'Edit Tour' : 'New Tour'}
                     </h2>
+
+                    {/* The Input Grid */}
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                        <input
+                            placeholder="Tour title *"
+                            value={form.title}
+                            onChange={e => handleTitleChange(e.target.value)}
+                            style={inputStyle}
+                        />
+                        <input
+                            placeholder="URL Slug (e.g. my-tour) *"
+                            value={form.slug}
+                            onChange={e => setForm({ ...form, slug: e.target.value.toLowerCase().replace(/\s+/g, '-') })}
+                            style={inputStyle}
+                        />
                         {[
-                            { key: 'title', placeholder: 'Tour title *' },
                             { key: 'price', placeholder: 'Current Price (e.g. from $49) *' },
                             { key: 'discount_from_price', placeholder: 'Old Price (e.g. $69) (Optional)' },
                             { key: 'duration', placeholder: 'Duration (e.g. 6–7 hours)' },
@@ -125,6 +174,15 @@ export default function AdminTours() {
                                 style={inputStyle} />
                         ))}
                     </div>
+
+                    {/* The New Description Text Box */}
+                    <textarea
+                        placeholder="Write the full tour description and itinerary here..."
+                        value={form.description}
+                        onChange={e => setForm({ ...form, description: e.target.value })}
+                        style={{ ...inputStyle, marginTop: 12, minHeight: 150, resize: 'vertical', fontFamily: 'inherit' }}
+                    />
+
                     <button onClick={handleSave} style={{
                         marginTop: 16, padding: '14px 32px', borderRadius: 999,
                         border: 'none', background: 'var(--green)', color: 'white',

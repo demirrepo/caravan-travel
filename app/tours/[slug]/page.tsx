@@ -2,27 +2,24 @@ import { supabase } from '@/lib/supabase'
 import Navbar from '@/components/Navbar'
 import { notFound } from 'next/navigation'
 
-// This prevents Next.js from aggressively caching the page, ensuring fresh data
-export const revalidate = 0
+// Keep the revalidate at 60 so it stays lightning fast!
+export const revalidate = 60
 
 export default async function TourPage({ params }: { params: Promise<{ slug: string }> }) {
-    // 1. Unwrap the params promise (Required for Next.js 15+)
     const { slug } = await params;
 
-    // 2. Fetch the specific tour using the unwrapped slug
     const { data: tour } = await supabase
         .from('tours')
         .select('*')
         .eq('slug', slug)
         .single()
 
-    // 3. If the tour doesn't exist, show a 404 page
     if (!tour) {
         notFound()
     }
 
     return (
-        <main style={{ minHeight: '100vh', backgroundColor: '#18120e', color: 'white' }}>
+        <main style={{ minHeight: '100vh', backgroundColor: '#fdfbf7', color: '#1a1a1a' }}>
             <Navbar />
 
             <div className="container" style={{ paddingTop: '120px', paddingBottom: '80px' }}>
@@ -39,10 +36,10 @@ export default async function TourPage({ params }: { params: Promise<{ slug: str
                     }}>
                         {tour.price}
                     </div>
-                    <h1 style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', lineHeight: 1.1, fontWeight: 800, marginBottom: '16px' }}>
+                    <h1 style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', lineHeight: 1.1, fontWeight: 800, marginBottom: '16px', color: '#111' }}>
                         {tour.title}
                     </h1>
-                    <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '1.1rem' }}>
+                    <p style={{ color: '#555', fontSize: '1.1rem', fontWeight: 500 }}>
                         Duration: {tour.duration} {tour.distance && `• Distance: ${tour.distance}`}
                     </p>
                 </div>
@@ -52,14 +49,14 @@ export default async function TourPage({ params }: { params: Promise<{ slug: str
 
                     {/* Left: The Description */}
                     <div>
-                        <h2 style={{ fontSize: '1.8rem', marginBottom: '24px', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '12px' }}>
+                        <h2 style={{ fontSize: '1.8rem', marginBottom: '24px', borderBottom: '2px solid rgba(193,145,59,.15)', paddingBottom: '12px', color: '#222' }}>
                             Tour Details & Itinerary
                         </h2>
                         <div style={{
                             fontSize: '1.1rem',
                             lineHeight: '1.8',
-                            color: 'rgba(255,255,255,0.85)',
-                            whiteSpace: 'pre-wrap' // This makes sure paragraph breaks from the admin panel actually show up!
+                            color: '#333',
+                            whiteSpace: 'pre-wrap'
                         }}>
                             {tour.description || "Detailed description coming soon..."}
                         </div>
@@ -68,15 +65,16 @@ export default async function TourPage({ params }: { params: Promise<{ slug: str
                     {/* Right: Booking Card */}
                     <div>
                         <div style={{
-                            background: 'rgba(255,255,255,.05)',
-                            border: '1px solid rgba(255,255,255,.1)',
+                            background: 'white',
+                            border: '1px solid rgba(193,145,59,.2)',
                             borderRadius: '24px',
                             padding: '32px',
                             position: 'sticky',
-                            top: '100px'
+                            top: '100px',
+                            boxShadow: '0 12px 30px rgba(0,0,0,0.04)'
                         }}>
-                            <h3 style={{ fontSize: '1.5rem', marginBottom: '12px' }}>Book This Tour</h3>
-                            <p style={{ color: 'rgba(255,255,255,0.7)', marginBottom: '24px', lineHeight: '1.5' }}>
+                            <h3 style={{ fontSize: '1.5rem', marginBottom: '12px', color: '#111' }}>Book This Tour</h3>
+                            <p style={{ color: '#555', marginBottom: '24px', lineHeight: '1.5' }}>
                                 Contact us directly on WhatsApp to check availability and book your dates.
                             </p>
                             <a
@@ -86,7 +84,8 @@ export default async function TourPage({ params }: { params: Promise<{ slug: str
                                     display: 'flex', justifyContent: 'center', alignItems: 'center',
                                     padding: '16px 24px', borderRadius: '999px',
                                     background: 'var(--green, #25D366)', color: 'white',
-                                    fontWeight: 800, textDecoration: 'none', fontSize: '1.1rem'
+                                    fontWeight: 800, textDecoration: 'none', fontSize: '1.1rem',
+                                    boxShadow: '0 8px 20px rgba(37, 211, 102, 0.2)'
                                 }}
                             >
                                 Message on WhatsApp

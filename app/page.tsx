@@ -62,7 +62,7 @@ export default async function Home() {
                   fontWeight: 800, background: 'var(--green)', color: 'white',
                   boxShadow: '0 12px 28px rgba(31,166,74,.24)'
                 }}>Book on WhatsApp</a>
-              <a href="#services" style={{
+              <a href="#featured" style={{
                 display: 'inline-flex', alignItems: 'center', gap: 10,
                 minHeight: 52, padding: '0 22px', borderRadius: 999,
                 fontWeight: 800, color: 'white',

@@ -5,6 +5,36 @@ import { notFound } from 'next/navigation'
 // Keep the revalidate at 60 so it stays lightning fast!
 export const revalidate = 60
 
+// ADDED: Dynamic Meta Tags for SEO
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+    const { slug } = await params;
+
+    const { data: tour } = await supabase
+        .from('tours')
+        .select('title, description')
+        .eq('slug', slug)
+        .single()
+
+    if (!tour) {
+        return {
+            title: 'Tour Not Found | Caravan Travel',
+        }
+    }
+
+    const shortDescription = tour.description
+        ? tour.description.substring(0, 150) + '...'
+        : `Book the ${tour.title} with Caravan Travel in Khiva, Uzbekistan.`;
+
+    return {
+        title: `${tour.title} | Caravan Travel Khiva`,
+        description: shortDescription,
+        openGraph: {
+            title: `${tour.title} | Caravan Travel Khiva`,
+            description: shortDescription,
+        }
+    }
+}
+
 export default async function TourPage({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params;
 

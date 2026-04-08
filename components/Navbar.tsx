@@ -1,5 +1,5 @@
 'use client'
-
+import Link from 'next/link'
 import { useState } from 'react'
 
 export default function Navbar() {
@@ -49,6 +49,9 @@ export default function Navbar() {
                     <a href="#featured" onClick={closeMenu}>Featured Tours</a>
                     <a href="#transfers" onClick={closeMenu}>Transfers</a>
                     <a href="#contact" onClick={closeMenu}>Contact</a>
+                    <Link href="/about" style={{ fontWeight: 600, color: '#111', textDecoration: 'none' }}>
+                        About Us
+                    </Link>
                 </nav>
             </div>
         </header>
